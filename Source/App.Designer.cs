@@ -17,6 +17,7 @@
             {
                 components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
@@ -33,10 +34,12 @@
             SaveButton = new Button();
             LoadButton = new Button();
             DecryptButton = new Button();
+            SettingsButton = new Button();
             SuspendLayout();
             // 
             // MainTextBox
             // 
+            MainTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             MainTextBox.BackColor = SystemColors.ScrollBar;
             MainTextBox.BorderStyle = BorderStyle.FixedSingle;
             MainTextBox.Location = new Point(14, 2);
@@ -47,6 +50,7 @@
             // 
             // EncryptButton
             // 
+            EncryptButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             EncryptButton.BackColor = SystemColors.ScrollBar;
             EncryptButton.Location = new Point(1335, 772);
             EncryptButton.Name = "EncryptButton";
@@ -58,6 +62,7 @@
             // 
             // SaveButton
             // 
+            SaveButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             SaveButton.BackColor = SystemColors.ScrollBar;
             SaveButton.Location = new Point(14, 772);
             SaveButton.Name = "SaveButton";
@@ -69,6 +74,7 @@
             // 
             // LoadButton
             // 
+            LoadButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             LoadButton.BackColor = SystemColors.ScrollBar;
             LoadButton.Location = new Point(159, 772);
             LoadButton.Name = "LoadButton";
@@ -80,6 +86,7 @@
             // 
             // DecryptButton
             // 
+            DecryptButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             DecryptButton.BackColor = SystemColors.ScrollBar;
             DecryptButton.Location = new Point(1190, 772);
             DecryptButton.Name = "DecryptButton";
@@ -89,12 +96,25 @@
             DecryptButton.UseVisualStyleBackColor = false;
             DecryptButton.Click += DecryptButton_Click;
             // 
+            // SettingsButton
+            // 
+            SettingsButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            SettingsButton.BackColor = SystemColors.ScrollBar;
+            SettingsButton.Location = new Point(303, 772);
+            SettingsButton.Name = "SettingsButton";
+            SettingsButton.Size = new Size(138, 33);
+            SettingsButton.TabIndex = 5;
+            SettingsButton.Text = "Settings";
+            SettingsButton.UseVisualStyleBackColor = false;
+            SettingsButton.Click += SettingsButton_Click;
+            // 
             // App
             // 
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(1487, 814);
+            Controls.Add(SettingsButton);
             Controls.Add(DecryptButton);
             Controls.Add(LoadButton);
             Controls.Add(SaveButton);
@@ -103,6 +123,8 @@
             Font = new Font("Segoe UI", 10F);
             Name = "App";
             Text = "Kinda Good Privacy";
+            FormClosing += App_FormClosing;
+            Load += App_Load;
             ResumeLayout(false);
         }
 
@@ -113,5 +135,6 @@
         private Button SaveButton;
         private Button LoadButton;
         private Button DecryptButton;
+        private Button SettingsButton;
     }
 }
