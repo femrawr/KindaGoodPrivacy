@@ -8,6 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <BaseOutputPath>C:\Users\choc\Desktop\projects\KindaGoodPrivacy\Build</BaseOutputPath>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <RootNamespace>$(MSBuildProjectName.Replace(" ", ""))</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

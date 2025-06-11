@@ -1,11 +1,14 @@
 using KindaGoodPrivacy.Source.Core;
+using KindaGoodPrivacy.Source.Core.SaveManager;
 using Microsoft.VisualBasic;
+using System.IO;
 
 namespace KindaGoodPrivacy
 {
     public partial class App : Form
     {
         private string? lastSaved = null;
+        private string? tab = "text";
 
         public App()
         {
@@ -17,6 +20,8 @@ namespace KindaGoodPrivacy
             string? loaded = SaveManager.LoadTemp();
             if (string.IsNullOrEmpty(loaded))
                 return;
+
+            tab = "text";
 
             MainTextBox.Text = loaded;
             lastSaved = loaded;
@@ -33,6 +38,9 @@ namespace KindaGoodPrivacy
             if (string.IsNullOrEmpty(MainTextBox.Text))
                 return;
 
+            if (string.IsNullOrWhiteSpace(MainTextBox.Text))
+                return;
+
             if (lastSaved == MainTextBox.Text)
                 return;
 
@@ -41,39 +49,80 @@ namespace KindaGoodPrivacy
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            SaveManager.Save(MainTextBox.Text);
-            lastSaved = MainTextBox.Text;
+            switch (tab)
+            {
+                case "text":
+                    SaveManager.Save(MainTextBox.Text, Variables.SAVETYPE_TEXT);
+                    lastSaved = MainTextBox.Text;
+                    break;
+
+                case "media":
+                    SaveManager.Save(MediaTextBox.Text, Variables.SAVETYPE_IMG);
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         private void LoadButton_Click(object sender, EventArgs e)
         {
-            string? loaded = SaveManager.Load();
-            if (loaded == null)
+            switch (tab)
             {
-                MessageBox.Show(
-                    "No data was returned by the Save Manager.",
-                    "KGP - Failed to load",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                case "text":
+                    string? tLoaded = SaveManager.Load(Variables.SAVETYPE_TEXT) as string;
+                    if (tLoaded == null)
+                    {
+                        MessageBox.Show(
+                            "No data was returned by the Save Manager.",
+                            "KGP - Failed to load",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error
+                        );
 
-                return;
+                        return;
+                    }
+
+                    if (tLoaded == MainTextBox.Text)
+                    {
+                        MessageBox.Show(
+                            "The file you have loaded has the same contents as the text box.",
+                            "KGP - No change",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information
+                        );
+
+                        return;
+                    }
+
+                    MainTextBox.Text = tLoaded;
+                    lastSaved = tLoaded;
+                    break;
+
+                case "media":
+                    byte[]? mLoaded = SaveManager.Load(Variables.SAVETYPE_IMG) as byte[];
+                    if (mLoaded == null)
+                    {
+                        MessageBox.Show(
+                            "No data was returned by the Save Manager.",
+                            "KGP - Failed to load",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error
+                        );
+
+                        return;
+                    }
+
+                    using (var stream = new MemoryStream(mLoaded))
+                        MediaDisplay.Image = Image.FromStream(stream);
+
+                    string str = BitConverter.ToString(mLoaded).Replace("-", " ");
+                    MediaTextBox.Text = str;
+                    break;
+
+                default:
+                    break;
             }
-
-            if (loaded == MainTextBox.Text)
-            {
-                MessageBox.Show(
-                    "The file you have loaded has the same contents as the text box.",
-                    "KGP - No change",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
-
-                return;
-            }
-
-            MainTextBox.Text = loaded;
-            lastSaved = loaded;
         }
 
         private void EncryptButton_Click(object sender, EventArgs e)
@@ -128,6 +177,48 @@ namespace KindaGoodPrivacy
         {
             using var settings = new AppSettings();
             settings.ShowDialog();
+        }
+
+        private void TextTab_Click(object sender, EventArgs e)
+        {
+            MediaDisplay.Enabled = false;
+            MediaDisplay.Visible = false;
+
+            MediaTextBox.Enabled = false;
+            MediaTextBox.Visible = false;
+
+            MainTextBox.Enabled = true;
+            MainTextBox.Visible = true;
+            MainTextBox.Focus();
+
+            tab = "text";
+        }
+
+        private void ImgTab_Click(object sender, EventArgs e)
+        {
+            MainTextBox.Enabled = false;
+            MainTextBox.Visible = false;
+
+            MediaDisplay.Enabled = true;
+            MediaDisplay.Visible = true;
+
+            MediaTextBox.Enabled = true;
+            MediaTextBox.Visible = true;
+            MediaTextBox.Focus();
+
+            tab = "media";
+
+#if DEBUG
+            string path = "C:\\Users\\choc\\Pictures\\mario.png";
+
+            byte[] bytes = File.ReadAllBytes(path);
+            string str = BitConverter.ToString(bytes).Replace("-", " ");
+
+            using (var stream = new MemoryStream(bytes))
+            MediaDisplay.Image = Image.FromStream(stream);
+
+            MediaTextBox.Text = str;
+#endif
         }
     }
 }

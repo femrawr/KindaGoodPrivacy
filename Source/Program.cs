@@ -1,4 +1,4 @@
-using KindaGoodPrivacy.Source.Core;
+using KindaGoodPrivacy.Source.Core.SaveManager;
 
 namespace KindaGoodPrivacy.Source
 {

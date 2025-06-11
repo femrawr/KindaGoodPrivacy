@@ -35,6 +35,11 @@
             LoadButton = new Button();
             DecryptButton = new Button();
             SettingsButton = new Button();
+            TextTab = new Button();
+            ImgTab = new Button();
+            MediaTextBox = new RichTextBox();
+            MediaDisplay = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)MediaDisplay).BeginInit();
             SuspendLayout();
             // 
             // MainTextBox
@@ -42,11 +47,11 @@
             MainTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             MainTextBox.BackColor = SystemColors.ScrollBar;
             MainTextBox.BorderStyle = BorderStyle.FixedSingle;
-            MainTextBox.Location = new Point(14, 2);
+            MainTextBox.Location = new Point(14, 50);
             MainTextBox.Name = "MainTextBox";
-            MainTextBox.Size = new Size(1460, 763);
+            MainTextBox.Size = new Size(1460, 715);
             MainTextBox.TabIndex = 0;
-            MainTextBox.Text = "";
+            MainTextBox.Text = " ";
             // 
             // EncryptButton
             // 
@@ -108,12 +113,62 @@
             SettingsButton.UseVisualStyleBackColor = false;
             SettingsButton.Click += SettingsButton_Click;
             // 
+            // TextTab
+            // 
+            TextTab.Location = new Point(14, 12);
+            TextTab.Name = "TextTab";
+            TextTab.Size = new Size(94, 29);
+            TextTab.TabIndex = 6;
+            TextTab.Text = "Text";
+            TextTab.UseVisualStyleBackColor = true;
+            TextTab.Click += TextTab_Click;
+            // 
+            // ImgTab
+            // 
+            ImgTab.Location = new Point(114, 12);
+            ImgTab.Name = "ImgTab";
+            ImgTab.Size = new Size(94, 29);
+            ImgTab.TabIndex = 7;
+            ImgTab.Text = "Media";
+            ImgTab.UseVisualStyleBackColor = true;
+            ImgTab.Click += ImgTab_Click;
+            // 
+            // MediaTextBox
+            // 
+            MediaTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            MediaTextBox.BackColor = SystemColors.ScrollBar;
+            MediaTextBox.BorderStyle = BorderStyle.FixedSingle;
+            MediaTextBox.Enabled = false;
+            MediaTextBox.Font = new Font("Segoe UI", 14F);
+            MediaTextBox.Location = new Point(14, 51);
+            MediaTextBox.Name = "MediaTextBox";
+            MediaTextBox.ReadOnly = true;
+            MediaTextBox.Size = new Size(720, 715);
+            MediaTextBox.TabIndex = 8;
+            MediaTextBox.Text = " ";
+            MediaTextBox.Visible = false;
+            // 
+            // MediaDisplay
+            // 
+            MediaDisplay.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            MediaDisplay.Enabled = false;
+            MediaDisplay.Location = new Point(740, 51);
+            MediaDisplay.Name = "MediaDisplay";
+            MediaDisplay.Size = new Size(733, 714);
+            MediaDisplay.TabIndex = 9;
+            MediaDisplay.TabStop = false;
+            MediaDisplay.Visible = false;
+            // 
             // App
             // 
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(1487, 814);
+            Controls.Add(MediaDisplay);
+            Controls.Add(MediaTextBox);
+            Controls.Add(ImgTab);
+            Controls.Add(TextTab);
             Controls.Add(SettingsButton);
             Controls.Add(DecryptButton);
             Controls.Add(LoadButton);
@@ -125,6 +180,7 @@
             Text = "Kinda Good Privacy";
             FormClosing += App_FormClosing;
             Load += App_Load;
+            ((System.ComponentModel.ISupportInitialize)MediaDisplay).EndInit();
             ResumeLayout(false);
         }
 
@@ -136,5 +192,9 @@
         private Button LoadButton;
         private Button DecryptButton;
         private Button SettingsButton;
+        private Button TextTab;
+        private Button ImgTab;
+        private RichTextBox MediaTextBox;
+        private PictureBox MediaDisplay;
     }
 }
