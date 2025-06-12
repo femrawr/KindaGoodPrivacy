@@ -1,7 +1,7 @@
 using KindaGoodPrivacy.Source.Core;
 using KindaGoodPrivacy.Source.Core.SaveManager;
 using Microsoft.VisualBasic;
-using System.IO;
+using System.Text;
 
 namespace KindaGoodPrivacy
 {
@@ -113,11 +113,20 @@ namespace KindaGoodPrivacy
                         return;
                     }
 
-                    using (var stream = new MemoryStream(mLoaded))
+                    try
+                    {
+                        using var stream = new MemoryStream(mLoaded);
                         MediaDisplay.Image = Image.FromStream(stream);
 
-                    string str = BitConverter.ToString(mLoaded).Replace("-", " ");
-                    MediaTextBox.Text = str;
+                        string str = Convert.ToBase64String(mLoaded);
+                        MediaTextBox.Text = str;
+                    }
+                    catch (Exception)
+                    {
+                        string str = Encoding.UTF8.GetString(mLoaded);
+                        MediaTextBox.Text = str;
+                    }
+
                     break;
 
                 default:
@@ -144,9 +153,22 @@ namespace KindaGoodPrivacy
                 return;
             }
 
-            string encrypted = CryptManager.SetEncrypted(MainTextBox.Text, password);
-            MainTextBox.Text = encrypted;
-            lastSaved = encrypted;
+            switch (tab)
+            {
+                case "text":
+                    string tEncrypted = CryptManager.SetEncrypted(MainTextBox.Text, password);
+                    MainTextBox.Text = tEncrypted;
+                    lastSaved = tEncrypted;
+                    break;
+
+                case "media":
+                    string mEncrypted = CryptManager.SetEncrypted(MediaTextBox.Text, password);
+                    MediaTextBox.Text = mEncrypted;
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         private void DecryptButton_Click(object sender, EventArgs e)
@@ -168,9 +190,25 @@ namespace KindaGoodPrivacy
                 return;
             }
 
-            string decrypted = CryptManager.SetDecrypted(MainTextBox.Text, password);
-            MainTextBox.Text = decrypted;
-            lastSaved = decrypted;
+            switch (tab) // TODO
+            {
+                case "text":
+                    string tDecrypted = CryptManager.SetDecrypted(MainTextBox.Text, password);
+                    MainTextBox.Text = tDecrypted;
+                    lastSaved = tDecrypted;
+                    break;
+
+                case "media":
+                    string mDecrypted = CryptManager.SetDecrypted(MediaTextBox.Text, password);
+                    MediaTextBox.Text = mDecrypted;
+
+                    using (var stream = new MemoryStream(Convert.FromBase64String(mDecrypted)))
+                        MediaDisplay.Image = Image.FromStream(stream);
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         private void SettingsButton_Click(object sender, EventArgs e)
@@ -212,7 +250,7 @@ namespace KindaGoodPrivacy
             string path = "C:\\Users\\choc\\Pictures\\mario.png";
 
             byte[] bytes = File.ReadAllBytes(path);
-            string str = BitConverter.ToString(bytes).Replace("-", " ");
+            string str = Convert.ToBase64String(bytes);
 
             using (var stream = new MemoryStream(bytes))
             MediaDisplay.Image = Image.FromStream(stream);

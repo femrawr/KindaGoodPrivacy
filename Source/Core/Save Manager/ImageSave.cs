@@ -20,6 +20,7 @@
         public static byte[]? LoadImg()
         {
             using var openFile = new OpenFileDialog();
+            openFile.InitialDirectory = Variables.imgFolderPath;
             openFile.Filter = $"All Files|*.*";
 
             if (openFile.ShowDialog() != DialogResult.OK)

@@ -1,6 +1,4 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace KindaGoodPrivacy.Source.Core.SaveManager
+﻿namespace KindaGoodPrivacy.Source.Core.SaveManager
 {
     public class SaveManager
     {

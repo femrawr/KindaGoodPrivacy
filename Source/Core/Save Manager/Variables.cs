@@ -20,7 +20,7 @@
         );
 
         public static readonly string mediaFolderPath = Path.Combine(
-            Utils.Saving.mainFolderPath, textFolderName
+            Utils.Saving.mainFolderPath, mediaFolderName
         );
 
         public static readonly string imgFolderPath = Path.Combine(
