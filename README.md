@@ -1,7 +1,7 @@
 # Kinda Good Privacy
 A simple, secure and light weight app to store text and images.
 
-crash out counter: `6`
+crash out counter: `7`
 
 ## Features
 - **Argon2id** to hash the key
