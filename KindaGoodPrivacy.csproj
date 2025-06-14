@@ -9,6 +9,7 @@
     <BaseOutputPath>C:\Users\choc\Desktop\projects\KindaGoodPrivacy\Build</BaseOutputPath>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <RootNamespace>$(MSBuildProjectName.Replace(" ", ""))</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

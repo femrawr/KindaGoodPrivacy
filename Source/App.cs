@@ -1,5 +1,6 @@
 using KindaGoodPrivacy.Source.Core;
 using KindaGoodPrivacy.Source.Core.SaveManager;
+using KindaGoodPrivacy.Source.Utils.Crypto;
 using Microsoft.VisualBasic;
 using System.Text;
 
@@ -24,7 +25,7 @@ namespace KindaGoodPrivacy
             tab = "text";
 
             MainTextBox.Text = loaded;
-            lastSaved = loaded;
+            lastSaved = FastCrypt.Hash(loaded);
 
             this.Activate();
             this.BringToFront();
@@ -41,7 +42,7 @@ namespace KindaGoodPrivacy
             if (string.IsNullOrWhiteSpace(MainTextBox.Text))
                 return;
 
-            if (lastSaved == MainTextBox.Text)
+            if (lastSaved == FastCrypt.Hash(MainTextBox.Text))
                 return;
 
             SaveManager.SaveTemp(MainTextBox.Text);
@@ -53,7 +54,7 @@ namespace KindaGoodPrivacy
             {
                 case "text":
                     SaveManager.Save(MainTextBox.Text, Variables.SAVETYPE_TEXT);
-                    lastSaved = MainTextBox.Text;
+                    lastSaved = FastCrypt.Hash(MainTextBox.Text);
                     break;
 
                 case "media":
@@ -96,10 +97,13 @@ namespace KindaGoodPrivacy
                     }
 
                     MainTextBox.Text = tLoaded;
-                    lastSaved = tLoaded;
+                    lastSaved = FastCrypt.Hash(tLoaded);
                     break;
 
                 case "media":
+                    MediaDisplay.Image = null;
+                    MediaTextBox.Text = "";
+
                     byte[]? mLoaded = SaveManager.Load(Variables.SAVETYPE_IMG) as byte[];
                     if (mLoaded == null)
                     {
@@ -158,7 +162,7 @@ namespace KindaGoodPrivacy
                 case "text":
                     string tEncrypted = CryptManager.SetEncrypted(MainTextBox.Text, password);
                     MainTextBox.Text = tEncrypted;
-                    lastSaved = tEncrypted;
+                    lastSaved = FastCrypt.Hash(tEncrypted);
                     break;
 
                 case "media":
@@ -195,7 +199,7 @@ namespace KindaGoodPrivacy
                 case "text":
                     string tDecrypted = CryptManager.SetDecrypted(MainTextBox.Text, password);
                     MainTextBox.Text = tDecrypted;
-                    lastSaved = tDecrypted;
+                    lastSaved = FastCrypt.Hash(tDecrypted);
                     break;
 
                 case "media":

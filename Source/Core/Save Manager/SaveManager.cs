@@ -1,4 +1,6 @@
-﻿namespace KindaGoodPrivacy.Source.Core.SaveManager
+﻿using KindaGoodPrivacy.Source.Utils.Crypto;
+
+namespace KindaGoodPrivacy.Source.Core.SaveManager
 {
     public class SaveManager
     {
@@ -51,7 +53,7 @@
 
             string filePath = Path.Combine(Variables.tempFolderPath, fileName);
 
-            string encrypted = CryptManager.SetEncrypted(data, fileName + filePath);
+            string encrypted = FastCrypt.Encrypt(data, fileName + filePath);
 
             Utils.Saving.CreateFile(filePath);
             Utils.Saving.WriteFile(filePath, encrypted);
@@ -102,7 +104,7 @@
                 return null;
 
             string contents = File.ReadAllText(file);
-            return CryptManager.SetDecrypted(contents, fileName + file);
+            return FastCrypt.Decrypt(contents, fileName + file);
         }
 
         public static void Init()

@@ -1,4 +1,5 @@
-﻿using KindaGoodPrivacy.Source.Utils;
+﻿using KindaGoodPrivacy.Source.Utils.Crypto;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace KindaGoodPrivacy.Source.Core
@@ -7,18 +8,41 @@ namespace KindaGoodPrivacy.Source.Core
     {
         public static string SetEncrypted(string data, string password)
         {
-            string convData = Convert.ToBase64String(Encoding.UTF8.GetBytes(data));
-            string convPass = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
+            byte[] dataBytes = Encoding.UTF8.GetBytes(data);
+            byte[] passBytes = Encoding.UTF8.GetBytes(password);
 
-            return Crypto.Encrypt(convData, convPass);
+            string convData = Convert.ToBase64String(dataBytes);
+            string convPass = Convert.ToBase64String(passBytes);
+
+            try
+            {
+                return Crypto.Encrypt(convData, convPass);
+            }
+            finally
+            {
+                CryptographicOperations.ZeroMemory(dataBytes);
+                CryptographicOperations.ZeroMemory(passBytes);
+            }
         }
 
         public static string SetDecrypted(string data, string password)
         {
-            string convPass = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
+            byte[] passBytes = Encoding.UTF8.GetBytes(password);
+
+            string convPass = Convert.ToBase64String(passBytes);
             string decrypted = Crypto.Decrypt(data, convPass);
 
-            return Encoding.UTF8.GetString(Convert.FromBase64String(decrypted));
+            byte[] decBytes = Convert.FromBase64String(decrypted);
+
+            try
+            {
+                return Encoding.UTF8.GetString(decBytes);
+            }
+            finally
+            {
+                CryptographicOperations.ZeroMemory(passBytes);
+                CryptographicOperations.ZeroMemory(decBytes);
+            }
         }
     }
 }
