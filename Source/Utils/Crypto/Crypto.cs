@@ -15,9 +15,13 @@ namespace KindaGoodPrivacy.Source.Utils.Crypto
         {
             byte[] rawBytes = Encoding.UTF8.GetBytes(raw);
 
-            byte[] salt = DeriveSalt(pass);
+            byte[] salt = new byte[SALT_SIZE];
+            byte[] nonce = new byte[NONCE_SIZE];
+
+            RandomNumberGenerator.Fill(salt);
+            RandomNumberGenerator.Fill(nonce);
+
             byte[] key = DeriveKey(pass, salt);
-            byte[] nonce = DeriveNonce(key, salt);
 
             byte[] ciphered = new byte[rawBytes.Length];
             byte[] tag = new byte[TAG_SIZE];
@@ -25,9 +29,25 @@ namespace KindaGoodPrivacy.Source.Utils.Crypto
             using var aes = new AesGcm(key, TAG_SIZE);
             aes.Encrypt(nonce, rawBytes, ciphered, tag);
 
-            byte[] encrypted = new byte[ciphered.Length + TAG_SIZE];
-            Buffer.BlockCopy(ciphered, 0, encrypted, 0, ciphered.Length);
-            Buffer.BlockCopy(tag, 0, encrypted, ciphered.Length, TAG_SIZE);
+            byte[] encrypted = new byte[
+                ciphered.Length +
+                NONCE_SIZE +
+                TAG_SIZE +
+                SALT_SIZE
+            ];
+
+            int offset = 0;
+
+            Buffer.BlockCopy(ciphered, 0, encrypted, offset, ciphered.Length);
+            offset += ciphered.Length;
+
+            Buffer.BlockCopy(nonce, 0, encrypted, offset, NONCE_SIZE);
+            offset += NONCE_SIZE;
+
+            Buffer.BlockCopy(tag, 0, encrypted, offset, TAG_SIZE);
+            offset += TAG_SIZE;
+
+            Buffer.BlockCopy(salt, 0, encrypted, offset, SALT_SIZE);
 
             try
             {
@@ -37,8 +57,8 @@ namespace KindaGoodPrivacy.Source.Utils.Crypto
             {
                 CryptographicOperations.ZeroMemory(rawBytes);
                 CryptographicOperations.ZeroMemory(salt);
-                CryptographicOperations.ZeroMemory(key);
                 CryptographicOperations.ZeroMemory(nonce);
+                CryptographicOperations.ZeroMemory(key);
                 CryptographicOperations.ZeroMemory(ciphered);
                 CryptographicOperations.ZeroMemory(tag);
                 CryptographicOperations.ZeroMemory(encrypted);
@@ -49,16 +69,32 @@ namespace KindaGoodPrivacy.Source.Utils.Crypto
         {
             byte[] encrypted = Convert.FromBase64String(enc);
 
-            byte[] ciphered = new byte[encrypted.Length - TAG_SIZE];
+            int size = NONCE_SIZE + TAG_SIZE + SALT_SIZE;
+            int encLen = encrypted.Length - size;
+
+            if (encrypted.Length < size)
+                throw new ArgumentException("Invalid data");
+
+            byte[] ciphered = new byte[encLen];
             byte[] tag = new byte[TAG_SIZE];
 
-            Buffer.BlockCopy(encrypted, 0, ciphered, 0, ciphered.Length);
-            Buffer.BlockCopy(encrypted, ciphered.Length, tag, 0, TAG_SIZE);
+            byte[] salt = new byte[SALT_SIZE];
+            byte[] nonce = new byte[NONCE_SIZE];
 
-            byte[] salt = DeriveSalt(pass);
+            int offset = 0;
+
+            Buffer.BlockCopy(encrypted, offset, ciphered, 0, encLen);
+            offset += encLen;
+
+            Buffer.BlockCopy(encrypted, offset, nonce, 0, NONCE_SIZE);
+            offset += NONCE_SIZE;
+
+            Buffer.BlockCopy(encrypted, offset, tag, 0, TAG_SIZE);
+            offset += TAG_SIZE;
+
+            Buffer.BlockCopy(encrypted, offset, salt, 0, SALT_SIZE);
+
             byte[] key = DeriveKey(pass, salt);
-            byte[] nonce = DeriveNonce(key, salt);
-
             byte[] decrypted = new byte[ciphered.Length];
 
             using var aes = new AesGcm(key, TAG_SIZE);
@@ -74,34 +110,9 @@ namespace KindaGoodPrivacy.Source.Utils.Crypto
                 CryptographicOperations.ZeroMemory(ciphered);
                 CryptographicOperations.ZeroMemory(tag);
                 CryptographicOperations.ZeroMemory(salt);
-                CryptographicOperations.ZeroMemory(key);
                 CryptographicOperations.ZeroMemory(nonce);
+                CryptographicOperations.ZeroMemory(key);
                 CryptographicOperations.ZeroMemory(decrypted);
-            }
-        }
-
-        private static byte[] DeriveSalt(string pass)
-        {
-            byte[] passBytes = Encoding.UTF8.GetBytes(pass);
-
-            byte[] joined = new byte[passBytes.Length * 2];
-            Buffer.BlockCopy(passBytes, 0, joined, 0, passBytes.Length);
-            Buffer.BlockCopy(passBytes, 0, joined, passBytes.Length, passBytes.Length);
-
-            try
-            {
-                using var hmac = new HMACSHA512(passBytes);
-                byte[] hash = hmac.ComputeHash(joined);
-
-                byte[] salt = new byte[SALT_SIZE];
-                Buffer.BlockCopy(hash, 0, salt, 0, SALT_SIZE);
-
-                return salt;
-            }
-            finally
-            {
-                CryptographicOperations.ZeroMemory(passBytes);
-                CryptographicOperations.ZeroMemory(joined);
             }
         }
 
@@ -122,38 +133,6 @@ namespace KindaGoodPrivacy.Source.Utils.Crypto
             finally
             {
                 CryptographicOperations.ZeroMemory(passBytes);
-                CryptographicOperations.ZeroMemory(salt);
-            }
-        }
-
-        private static byte[] DeriveNonce(byte[] key, byte[] salt)
-        {
-            byte[] joined = new byte[key.Length + salt.Length + key.Length];
-            int offset = 0;
-
-            Buffer.BlockCopy(key, 0, joined, offset, key.Length);
-            offset += key.Length;
-
-            Buffer.BlockCopy(salt, 0, joined, offset, salt.Length);
-            offset += salt.Length;
-
-            Buffer.BlockCopy(key, 0, joined, offset, key.Length);
-
-            try
-            {
-                using var sha512 = SHA512.Create();
-                byte[] hash = sha512.ComputeHash(joined);
-
-                byte[] nonce = new byte[NONCE_SIZE];
-                Buffer.BlockCopy(hash, 0, nonce, 0, NONCE_SIZE);
-
-                return nonce;
-            }
-            finally
-            {
-                CryptographicOperations.ZeroMemory(key);
-                CryptographicOperations.ZeroMemory(salt);
-                CryptographicOperations.ZeroMemory(joined);
             }
         }
     }

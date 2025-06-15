@@ -18,20 +18,21 @@ namespace KindaGoodPrivacy
 
         private void App_Load(object sender, EventArgs e)
         {
-            string? loaded = SaveManager.LoadTemp();
-            if (string.IsNullOrEmpty(loaded))
-                return;
-
             tab = "text";
 
-            MainTextBox.Text = loaded;
-            lastSaved = FastCrypt.Hash(loaded);
+            Activate();
+            BringToFront();
+            Focus();
 
-            this.Activate();
-            this.BringToFront();
-            this.Focus();
-
+            MainTextBox.Text = "";
             MainTextBox.Focus();
+
+            string? loaded = SaveManager.LoadTemp();
+            if (!string.IsNullOrEmpty(loaded))
+            {
+                MainTextBox.Text = loaded;
+                lastSaved = FastCrypt.Hash(loaded);
+            }
         }
 
         private void App_FormClosing(object sender, EventArgs e)
