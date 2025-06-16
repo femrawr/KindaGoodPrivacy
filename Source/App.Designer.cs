@@ -105,7 +105,7 @@
             // 
             SettingsButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             SettingsButton.BackColor = SystemColors.ScrollBar;
-            SettingsButton.Location = new Point(303, 772);
+            SettingsButton.Location = new Point(1335, 8);
             SettingsButton.Name = "SettingsButton";
             SettingsButton.Size = new Size(138, 33);
             SettingsButton.TabIndex = 5;

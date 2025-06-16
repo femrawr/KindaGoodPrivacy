@@ -6,6 +6,8 @@
 
         public static readonly string extension = ".kgp";
 
+        public static readonly string settingsFileName = "Settings" + extension + "SETTINGS";
+
         public static readonly string textFolderName = "TextSaves";
         public static readonly string mediaFolderName = "MediaSaves";
         public static readonly string tempFolderName = "TempSaves";
@@ -14,6 +16,10 @@
         public static readonly string vidFolderName = "VidSaves";
 
         public static readonly string tempMetadataName = "_meta" + extension + "METADATA";
+
+        public static readonly string settingsFilePath = Path.Combine(
+            Utils.Saving.mainFolderPath, settingsFileName
+        );
 
         public static readonly string textFolderPath = Path.Combine(
             Utils.Saving.mainFolderPath, textFolderName

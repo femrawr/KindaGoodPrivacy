@@ -87,6 +87,7 @@
             SaveButton.TabIndex = 12;
             SaveButton.Text = "Save";
             SaveButton.UseVisualStyleBackColor = true;
+            SaveButton.Click += SaveButton_Click;
             // 
             // ParallelismDesc
             // 
@@ -163,6 +164,8 @@
             Controls.Add(SaveButton);
             Name = "AppSettings";
             Text = "App Settings";
+            Load += App_Load;
+            FormClosing += App_FormClosing;
             ResumeLayout(false);
             PerformLayout();
         }

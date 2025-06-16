@@ -1,4 +1,5 @@
-﻿using Konscious.Security.Cryptography;
+﻿using KindaGoodPrivacy.Source.Core.Settings;
+using Konscious.Security.Cryptography;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -124,9 +125,9 @@ namespace KindaGoodPrivacy.Source.Utils.Crypto
             {
                 using var argon2 = new Argon2id(passBytes);
                 argon2.Salt = salt;
-                argon2.Iterations = 35;
-                argon2.MemorySize = 65536;
-                argon2.DegreeOfParallelism = Environment.ProcessorCount;
+                argon2.Iterations = Settings.Iterations;
+                argon2.MemorySize = Settings.MemorySize;
+                argon2.DegreeOfParallelism = Settings.Parallelism;
 
                 return argon2.GetBytes(KEY_SIZE);
             }

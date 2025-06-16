@@ -109,6 +109,8 @@ namespace KindaGoodPrivacy.Source.Core.SaveManager
 
         public static void Init()
         {
+            Utils.Saving.CreateFile(Variables.settingsFileName);
+
             Utils.Saving.CreateFolder(Variables.textFolderName);
             Utils.Saving.CreateFolder(Variables.mediaFolderName);
             Utils.Saving.CreateFolder(Variables.tempFolderName);

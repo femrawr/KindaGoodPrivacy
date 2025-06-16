@@ -1,4 +1,5 @@
 using KindaGoodPrivacy.Source.Core.SaveManager;
+using KindaGoodPrivacy.Source.Core.Settings;
 
 namespace KindaGoodPrivacy.Source
 {
@@ -9,6 +10,8 @@ namespace KindaGoodPrivacy.Source
         {
             Utils.Saving.Guard();
             SaveManager.Init();
+
+            Settings.Load();
 
             ApplicationConfiguration.Initialize();
             Application.Run(new App());
