@@ -106,7 +106,7 @@
             // 
             // SettingsButton
             // 
-            SettingsButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            SettingsButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             SettingsButton.BackColor = SystemColors.ScrollBar;
             SettingsButton.Image = (Image)resources.GetObject("SettingsButton.Image");
             SettingsButton.Location = new Point(1438, 12);
@@ -164,7 +164,7 @@
             // 
             // HelpButton
             // 
-            HelpButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            HelpButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             HelpButton.BackColor = SystemColors.ScrollBar;
             HelpButton.Image = (Image)resources.GetObject("HelpButton.Image");
             HelpButton.Location = new Point(1397, 12);
@@ -175,7 +175,7 @@
             // 
             // OptionsButton
             // 
-            OptionsButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            OptionsButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             OptionsButton.BackColor = SystemColors.ScrollBar;
             OptionsButton.Image = (Image)resources.GetObject("OptionsButton.Image");
             OptionsButton.Location = new Point(1356, 12);

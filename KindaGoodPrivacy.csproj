@@ -21,6 +21,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Installer-CLI\**" />
+    <EmbeddedResource Remove="Installer-CLI\**" />
+    <None Remove="Installer-CLI\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ini-parser" Version="2.5.2" />
     <PackageReference Include="Konscious.Security.Cryptography.Argon2" Version="1.3.1" />
   </ItemGroup>
