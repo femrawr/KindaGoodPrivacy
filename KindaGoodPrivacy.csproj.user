@@ -4,6 +4,12 @@
     <Compile Update="Source\App.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Source\Apps\Help\FAQMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Source\Apps\Options\OptionsMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Source\Apps\Settings\AppSettings.cs">
       <SubType>Form</SubType>
     </Compile>

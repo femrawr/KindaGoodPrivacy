@@ -9,8 +9,7 @@ crash out counter: `7`
 
 ## Todo
 1. better error handling
-2. make settings page do something
-3. installer
-4. drag and drop files
-5. login screen
-6. better README file
+2. installer
+3. drag and drop files
+4. login screen
+5. better README file
