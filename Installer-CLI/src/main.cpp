@@ -16,6 +16,10 @@ using std::vector;
 
 const char end = '\n';
 
+const int VERSION_MAJOR = 1;
+const int VERSION_MINOR = 1;
+const int VERSION_PATCH = 2;
+
 struct Release {
 	string name;
 	string downloadUrl;
@@ -24,6 +28,14 @@ struct Release {
 };
 
 int main() {
+	cout << "Installer CLI version: v" <<
+		VERSION_MAJOR <<
+		'.' <<
+		VERSION_MINOR <<
+		'.' <<
+		VERSION_PATCH <<
+		end;
+
 	cout << "Featching releases, hold on a while..." << end;
 
 	string res = http::request(
@@ -41,7 +53,7 @@ int main() {
 
 	for (const auto& release_json : releases) {
 		string tag = extractor::json(release_json, "tag_name");
-		if (tag != "app")
+		if (!tag.ends_with("app"))
 			continue;
 
 		Release release;
