@@ -10,6 +10,7 @@
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <RootNamespace>$(MSBuildProjectName.Replace(" ", ""))</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ApplicationIcon>Resources\Assets\icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -24,6 +25,10 @@
     <Compile Remove="Installer-CLI\**" />
     <EmbeddedResource Remove="Installer-CLI\**" />
     <None Remove="Installer-CLI\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Assets\icon.ico" />
   </ItemGroup>
 
   <ItemGroup>

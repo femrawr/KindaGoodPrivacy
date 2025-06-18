@@ -158,6 +158,15 @@ int main() {
 
 	DeleteFileA(temp_path.c_str());
 
+	bool shortcut = misc::create_shortcut(
+		misc::str_to_wstr(app_folder) + L"\\KindaGoodPrivacy.exe",
+		misc::str_to_wstr(app_folder)
+	);
+
+	if (!shortcut) {
+		cerr << "Failed to create desktop shortcut." << end;
+	}
+
 	std::cout << "Files installed to: " << app_folder << end;
 	std::cout << "Installation completed successfully!" << end;
 

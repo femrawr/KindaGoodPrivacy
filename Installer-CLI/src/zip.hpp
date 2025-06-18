@@ -10,11 +10,13 @@ using std::wstring;
 
 namespace zip {
 	inline bool unzip(const wstring& from, const wstring& to) {
-		auto _ = CoInitialize(NULL);
+		HRESULT res = CoInitialize(NULL);
+		if (FAILED(res))
+			return false;
 
 		IShellDispatch* shell = NULL;
 
-		HRESULT res = CoCreateInstance(
+		res = CoCreateInstance(
 			CLSID_Shell, NULL,
 			CLSCTX_INPROC_SERVER,
 			IID_IShellDispatch,

@@ -203,6 +203,7 @@
             Controls.Add(EncryptButton);
             Controls.Add(MainTextBox);
             Font = new Font("Segoe UI", 10F);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "App";
             Text = "Kinda Good Privacy";
             FormClosing += App_FormClosing;
