@@ -66,9 +66,7 @@ int main() {
 			if (last_slash != string::npos) {
 				release.fileName = release.downloadUrl.substr(last_slash + 1);
 			}
-		}
 
-		if (!release.downloadUrl.empty()) {
 			apps.push_back(release);
 		}
 	}

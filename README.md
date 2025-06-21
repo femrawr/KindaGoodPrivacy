@@ -3,13 +3,18 @@ A simple, fast, secure and light weight app to store text and images.
 
 crash out counter: `7`
 
-## Features
-- **Argon2id** to hash the key
-- **AES-GCM** for the encryption
+## Installation
+1. Goto the [Releases](https://github.com/femrawr/KindaGoodPrivacy/releases) section
+2. Look for the latest CLI installer
+    - it will be named "Release [`number`] - CLI installer"
+    - look for the one with the biggest number
+3. Download the executable (the .exe file)
+4. Run it and it will download it to `AppData\Roaming\Kinda Good Privacy\Application` and create a desktop shortcut
 
 ## Todo
 1. better error handling
-2. installer
-3. drag and drop files
-4. login screen
-5. better README file
+2. login screen
+3. more settings
+4. make the top right buttons do something
+5. cross device data transfer
+6. video support
