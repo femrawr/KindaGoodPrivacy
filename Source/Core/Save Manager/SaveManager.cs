@@ -24,7 +24,7 @@ namespace KindaGoodPrivacy.Source.Core.SaveManager
             }
         }
 
-        public static object? Load(int type)
+        public static (object?, bool) Load(int type)
         {
             switch (type)
             {
@@ -41,7 +41,7 @@ namespace KindaGoodPrivacy.Source.Core.SaveManager
                     break;
             }
 
-            return null;
+            return (null, false);
         }
 
         public static string SaveTemp(string data)

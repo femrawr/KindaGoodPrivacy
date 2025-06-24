@@ -17,21 +17,21 @@
             Utils.Saving.WriteFile(filePath, data);
         }
 
-        public static byte[]? LoadImg()
+        public static (byte[]?, bool) LoadImg()
         {
             using var openFile = new OpenFileDialog();
             openFile.InitialDirectory = Variables.imgFolderPath;
             openFile.Filter = $"All Files|*.*";
 
             if (openFile.ShowDialog() != DialogResult.OK)
-                return null;
+                return (null, false);
 
             string filePath = openFile.FileName;
 
             if (File.Exists(filePath))
-                return File.ReadAllBytes(filePath);
+                return (File.ReadAllBytes(filePath), true);
 
-            return null;
+            return (null, true);
         }
     }
 }

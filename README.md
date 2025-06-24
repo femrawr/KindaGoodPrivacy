@@ -1,5 +1,5 @@
 # Kinda Good Privacy
-A simple, fast, secure and light weight app to store text and images.
+A simple, fast, secure and light weight app to store and encrypt text and images.
 
 crash out counter: `7`
 
@@ -10,11 +10,3 @@ crash out counter: `7`
     - look for the one with the biggest number
 3. Download the executable (the .exe file)
 4. Run it and it will download it to `AppData\Roaming\Kinda Good Privacy\Application` and create a desktop shortcut
-
-## Todo
-1. better error handling
-2. login screen
-3. more settings
-4. make the top right buttons do something
-5. cross device data transfer
-6. video support

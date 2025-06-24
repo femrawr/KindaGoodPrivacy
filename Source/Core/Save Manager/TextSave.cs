@@ -17,21 +17,21 @@
             Utils.Saving.WriteFile(filePath, data);
         }
 
-        public static string? LoadText()
+        public static (string?, bool) LoadText()
         {
             using var openFile = new OpenFileDialog();
             openFile.InitialDirectory = Variables.textFolderPath;
             openFile.Filter = $"Text Files (*{Variables.extension})|*{Variables.extension}";
 
             if (openFile.ShowDialog() != DialogResult.OK)
-                return null;
+                return (null, false);
 
             string filePath = openFile.FileName;
 
             if (File.Exists(filePath))
-                return File.ReadAllText(filePath);
+                return (File.ReadAllText(filePath), true);
 
-            return null;
+            return (null, true);
         }
     }
 }

@@ -58,8 +58,8 @@ namespace KindaGoodPrivacy
                     lastSaved = FastCrypt.Hash(MainTextBox.Text);
                     break;
 
-                case "media":
-                    SaveManager.Save(MediaTextBox.Text, Variables.SAVETYPE_IMG);
+                case "image":
+                    SaveManager.Save(ImageTextBox.Text, Variables.SAVETYPE_IMG);
                     break;
 
                 default:
@@ -72,8 +72,12 @@ namespace KindaGoodPrivacy
             switch (tab)
             {
                 case "text":
-                    string? tLoaded = SaveManager.Load(Variables.SAVETYPE_TEXT) as string;
-                    if (tLoaded == null)
+                    (
+                        object? tLoadedObj,
+                        bool tSuccess
+                    ) = SaveManager.Load(Variables.SAVETYPE_TEXT);
+
+                    if (tLoadedObj == null && tSuccess)
                     {
                         MessageBox.Show(
                             "No data was returned by the Save Manager.",
@@ -84,6 +88,10 @@ namespace KindaGoodPrivacy
 
                         return;
                     }
+
+                    if (!tSuccess) return;
+
+                    string tLoaded = tLoadedObj as string;
 
                     if (tLoaded == MainTextBox.Text)
                     {
@@ -101,12 +109,16 @@ namespace KindaGoodPrivacy
                     lastSaved = FastCrypt.Hash(tLoaded);
                     break;
 
-                case "media":
-                    MediaDisplay.Image = null;
-                    MediaTextBox.Text = "";
+                case "image":
+                    ImageDisplay.Image = null;
+                    ImageTextBox.Text = "";
 
-                    byte[]? mLoaded = SaveManager.Load(Variables.SAVETYPE_IMG) as byte[];
-                    if (mLoaded == null)
+                    (
+                        object? iLoadedObj,
+                        bool iSuccess
+                    ) = SaveManager.Load(Variables.SAVETYPE_IMG);
+
+                    if (iLoadedObj == null && iSuccess)
                     {
                         MessageBox.Show(
                             "No data was returned by the Save Manager.",
@@ -118,18 +130,22 @@ namespace KindaGoodPrivacy
                         return;
                     }
 
+                    if (!iSuccess) return;
+
+                    byte[] iLoaded = iLoadedObj as byte[];
+
                     try
                     {
-                        using var stream = new MemoryStream(mLoaded);
-                        MediaDisplay.Image = Image.FromStream(stream);
+                        using var stream = new MemoryStream(iLoaded);
+                        ImageDisplay.Image = Image.FromStream(stream);
 
-                        string str = Convert.ToBase64String(mLoaded);
-                        MediaTextBox.Text = str;
+                        string str = Convert.ToBase64String(iLoaded);
+                        ImageTextBox.Text = str;
                     }
                     catch (Exception)
                     {
-                        string str = Encoding.UTF8.GetString(mLoaded);
-                        MediaTextBox.Text = str;
+                        string str = Encoding.UTF8.GetString(iLoaded);
+                        ImageTextBox.Text = str;
                     }
 
                     break;
@@ -166,9 +182,9 @@ namespace KindaGoodPrivacy
                     lastSaved = FastCrypt.Hash(tEncrypted);
                     break;
 
-                case "media":
-                    string mEncrypted = CryptManager.SetEncrypted(MediaTextBox.Text, password);
-                    MediaTextBox.Text = mEncrypted;
+                case "image":
+                    string mEncrypted = CryptManager.SetEncrypted(ImageTextBox.Text, password);
+                    ImageTextBox.Text = mEncrypted;
                     break;
 
                 default:
@@ -195,20 +211,33 @@ namespace KindaGoodPrivacy
                 return;
             }
 
-            switch (tab) // TODO
+            switch (tab)
             {
                 case "text":
-                    string tDecrypted = CryptManager.SetDecrypted(MainTextBox.Text, password);
+                    (string tDecrypted, bool tSuccess) = CryptManager.SetDecrypted(
+                        MainTextBox.Text,
+                        password
+                    );
+
+                    if (!tSuccess) return;
+
                     MainTextBox.Text = tDecrypted;
                     lastSaved = FastCrypt.Hash(tDecrypted);
                     break;
 
-                case "media":
-                    string mDecrypted = CryptManager.SetDecrypted(MediaTextBox.Text, password);
-                    MediaTextBox.Text = mDecrypted;
+                case "image":
+                    (string iDecrypted, bool iSuccess) = CryptManager.SetDecrypted(
+                        ImageTextBox.Text,
+                        password
+                    );
 
-                    using (var stream = new MemoryStream(Convert.FromBase64String(mDecrypted)))
-                        MediaDisplay.Image = Image.FromStream(stream);
+                    if (!iSuccess) return;
+
+                    ImageTextBox.Text = iDecrypted;
+
+                    using (var stream = new MemoryStream(Convert.FromBase64String(iDecrypted)))
+                        ImageDisplay.Image = Image.FromStream(stream);
+
                     break;
 
                 default:
@@ -224,11 +253,11 @@ namespace KindaGoodPrivacy
 
         private void TextTab_Click(object sender, EventArgs e)
         {
-            MediaDisplay.Enabled = false;
-            MediaDisplay.Visible = false;
+            ImageDisplay.Enabled = false;
+            ImageDisplay.Visible = false;
 
-            MediaTextBox.Enabled = false;
-            MediaTextBox.Visible = false;
+            ImageTextBox.Enabled = false;
+            ImageTextBox.Visible = false;
 
             MainTextBox.Enabled = true;
             MainTextBox.Visible = true;
@@ -242,26 +271,14 @@ namespace KindaGoodPrivacy
             MainTextBox.Enabled = false;
             MainTextBox.Visible = false;
 
-            MediaDisplay.Enabled = true;
-            MediaDisplay.Visible = true;
+            ImageDisplay.Enabled = true;
+            ImageDisplay.Visible = true;
 
-            MediaTextBox.Enabled = true;
-            MediaTextBox.Visible = true;
-            MediaTextBox.Focus();
+            ImageTextBox.Enabled = true;
+            ImageTextBox.Visible = true;
+            ImageTextBox.Focus();
 
-            tab = "media";
-
-#if DEBUG
-            string path = "C:\\Users\\choc\\Pictures\\mario.png";
-
-            byte[] bytes = File.ReadAllBytes(path);
-            string str = Convert.ToBase64String(bytes);
-
-            using (var stream = new MemoryStream(bytes))
-            MediaDisplay.Image = Image.FromStream(stream);
-
-            MediaTextBox.Text = str;
-#endif
+            tab = "image";
         }
     }
 }

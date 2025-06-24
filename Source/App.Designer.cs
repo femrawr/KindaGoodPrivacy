@@ -38,11 +38,11 @@
             SettingsButton = new Button();
             TextTab = new Button();
             ImgTab = new Button();
-            MediaTextBox = new RichTextBox();
-            MediaDisplay = new PictureBox();
+            ImageTextBox = new RichTextBox();
+            ImageDisplay = new PictureBox();
             HelpButton = new Button();
             OptionsButton = new Button();
-            ((System.ComponentModel.ISupportInitialize)MediaDisplay).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ImageDisplay).BeginInit();
             SuspendLayout();
             // 
             // MainTextBox
@@ -132,35 +132,35 @@
             ImgTab.Name = "ImgTab";
             ImgTab.Size = new Size(94, 29);
             ImgTab.TabIndex = 7;
-            ImgTab.Text = "Media";
+            ImgTab.Text = "Image";
             ImgTab.UseVisualStyleBackColor = true;
             ImgTab.Click += ImgTab_Click;
             // 
-            // MediaTextBox
+            // ImageTextBox
             // 
-            MediaTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            MediaTextBox.BackColor = SystemColors.ScrollBar;
-            MediaTextBox.BorderStyle = BorderStyle.FixedSingle;
-            MediaTextBox.Enabled = false;
-            MediaTextBox.Font = new Font("Segoe UI", 14F);
-            MediaTextBox.Location = new Point(14, 51);
-            MediaTextBox.Name = "MediaTextBox";
-            MediaTextBox.ReadOnly = true;
-            MediaTextBox.Size = new Size(720, 715);
-            MediaTextBox.TabIndex = 8;
-            MediaTextBox.Text = " ";
-            MediaTextBox.Visible = false;
+            ImageTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            ImageTextBox.BackColor = SystemColors.ScrollBar;
+            ImageTextBox.BorderStyle = BorderStyle.FixedSingle;
+            ImageTextBox.Enabled = false;
+            ImageTextBox.Font = new Font("Segoe UI", 14F);
+            ImageTextBox.Location = new Point(14, 51);
+            ImageTextBox.Name = "ImageTextBox";
+            ImageTextBox.ReadOnly = true;
+            ImageTextBox.Size = new Size(720, 715);
+            ImageTextBox.TabIndex = 8;
+            ImageTextBox.Text = " ";
+            ImageTextBox.Visible = false;
             // 
-            // MediaDisplay
+            // ImageDisplay
             // 
-            MediaDisplay.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            MediaDisplay.Enabled = false;
-            MediaDisplay.Location = new Point(733, 51);
-            MediaDisplay.Name = "MediaDisplay";
-            MediaDisplay.Size = new Size(740, 714);
-            MediaDisplay.TabIndex = 9;
-            MediaDisplay.TabStop = false;
-            MediaDisplay.Visible = false;
+            ImageDisplay.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            ImageDisplay.Enabled = false;
+            ImageDisplay.Location = new Point(733, 51);
+            ImageDisplay.Name = "ImageDisplay";
+            ImageDisplay.Size = new Size(740, 714);
+            ImageDisplay.TabIndex = 9;
+            ImageDisplay.TabStop = false;
+            ImageDisplay.Visible = false;
             // 
             // HelpButton
             // 
@@ -192,8 +192,8 @@
             ClientSize = new Size(1487, 814);
             Controls.Add(OptionsButton);
             Controls.Add(HelpButton);
-            Controls.Add(MediaDisplay);
-            Controls.Add(MediaTextBox);
+            Controls.Add(ImageDisplay);
+            Controls.Add(ImageTextBox);
             Controls.Add(ImgTab);
             Controls.Add(TextTab);
             Controls.Add(SettingsButton);
@@ -208,7 +208,7 @@
             Text = "Kinda Good Privacy";
             FormClosing += App_FormClosing;
             Load += App_Load;
-            ((System.ComponentModel.ISupportInitialize)MediaDisplay).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ImageDisplay).EndInit();
             ResumeLayout(false);
         }
 
@@ -222,8 +222,8 @@
         private Button SettingsButton;
         private Button TextTab;
         private Button ImgTab;
-        private RichTextBox MediaTextBox;
-        private PictureBox MediaDisplay;
+        private RichTextBox ImageTextBox;
+        private PictureBox ImageDisplay;
         private Button HelpButton;
         private Button OptionsButton;
     }
